@@ -405,12 +405,15 @@ class TCPClient(object):
             all(len(vel) == 3 for vel in velocities)
         self._step(qrsim_proto.Step.VEL, dt, velocities)
 
-    def rpc(self, target, method):
+    def rpc(self, target, method, *args):
         self._needs_initialization()
         msg = qrsim_proto.Message()
         msg.type = qrsim_proto.Message.RPC
         msg.rpc.target = getattr(qrsim_proto.Rpc, target)
         msg.rpc.method = method
+        for arg in args:
+            msg_arg = msg.rpc.arg.add()
+            msg_arg.value.extend(arg)
         self._send(msg)
         return self._receive_return_value()
 

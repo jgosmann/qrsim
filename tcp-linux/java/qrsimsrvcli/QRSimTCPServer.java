@@ -120,11 +120,13 @@ public void sendRpcReturnValue(double[][] value) throws Exception
     mb.setType(Message.Type.RPC_RETURN_VALUE);
 
     Arrayd.Builder arraydb = Arrayd.newBuilder();
-    for (int i = 0; i < value.length; i++)
-    {
-        for (int j = 0; j < value[i].length; j++)
+    if (value != null) {
+        for (int i = 0; i < value.length; i++)
         {
-            arraydb.addValue(value[i][j]);
+            for (int j = 0; j < value[i].length; j++)
+            {
+                arraydb.addValue(value[i][j]);
+            }
         }
     }
 
@@ -205,6 +207,17 @@ public static double[][] parseStepCmd(Step step)
     }
   }
   return cmd;
+}
+
+// helper to parse the arg fields of STEP messages into Matlab arrays
+public static double[][] parseRpcArg(Arrayd arg)
+{
+    double[][] parsed = new double[1][arg.getValueCount()];
+
+    for(int i = 0; i < arg.getValueCount(); i++) {
+        parsed[0][i] = arg.getValue(i);
+    }
+    return parsed;
 }
 
 // helper to parse State messages into Matlab arrays of State

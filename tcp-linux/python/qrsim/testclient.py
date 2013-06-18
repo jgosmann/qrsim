@@ -74,7 +74,16 @@ def test_platforms_rpc(client):
     client.reset()
     wps = [[0, 0, -10, 0] for i in xrange(client.numUAVs)]
     client.step_wp(0.1, wps)
-    assert len(client.rpc('PLATFORMS', 'getPlumeSensorOutput')) > 0
+    assert len(client.rpc('PLATFORMS', 'getPlumeSensorOutput')) == 1
+
+
+@test('rpc argument')
+def test_rpc_argument(client):
+    client.init('TaskPlumeSingleSourceGaussianDefaultControls', False)
+    client.reset()
+    locations = client.rpc('TASK', 'getLocations')
+    numLocations = len(locations) // 3
+    client.rpc('TASK', 'setSamples', numLocations * [0])
 
 
 if __name__ == '__main__':
@@ -93,6 +102,7 @@ if __name__ == '__main__':
     test_step_vel(client)
     test_rpc(client)
     test_platforms_rpc(client)
+    test_rpc_argument(client)
     test_disconnect(client)
 
     client.connect_to(args.ip[0], args.port[0])

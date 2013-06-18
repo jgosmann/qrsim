@@ -65,6 +65,7 @@ message Rpc {
 
     required Target target = 1;  // target of the call
     required string method = 2;  // name of the method to call
+    repeated Arrayd arg = 3;     // arguments to the method call
 }
 
 //
