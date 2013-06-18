@@ -230,8 +230,8 @@ class TCPClient(object):
     """Tolerance used to compare times."""
 
     def __init__(self):
-        self.__initialized = False
-        self.__socket_open = False
+        self.__initialized = False  # FIXME reset on discon
+        self.__socket_open = False  # FIXME reset on discon
         self.__size_msg = qrsim_proto.Size()
         self.__size_msg.value = 1
         self.__size_msg_size = self.__size_msg.ByteSize()
@@ -405,6 +405,15 @@ class TCPClient(object):
             all(len(vel) == 3 for vel in velocities)
         self._step(qrsim_proto.Step.VEL, dt, velocities)
 
+    def rpc(self, target, method):
+        self._needs_initialization()
+        msg = qrsim_proto.Message()
+        msg.type = qrsim_proto.Message.RPC
+        msg.rpc.target = getattr(qrsim_proto.Rpc, target)
+        msg.rpc.method = method
+        self._send(msg)
+        return self._receive_return_value()
+
     def _step(self, type, dt, cmds):
         self._needs_initialization()
         f, unused = modf(dt / self.timestep)
@@ -433,6 +442,11 @@ class TCPClient(object):
         self._state = tuple(UAVState(tuple(x.value)) for x in msg.state.X)
         self._noisy_state = tuple(
             NoisyUAVState(tuple(x.value)) for x in msg.state.eX)
+
+    def _receive_return_value(self):
+        msg = self._receive_msg()
+        self._check_msg_type(msg, qrsim_proto.Message.RPC_RETURN_VALUE)
+        return msg.return_value.value
 
     def _receive_info(self):
         msg = self._receive_msg()

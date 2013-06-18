@@ -61,6 +61,22 @@ def test_step_vel(client):
     client.step_vel(0.1, velocities)
 
 
+@test('rpc')
+def test_rpc(client):
+    client.init('TaskPlumeSingleSourceGaussian', False)
+    client.reset()
+    assert [1.0] == client.rpc('TASK', 'getSamplesPerLocation')
+
+
+@test('platforms rpc')
+def test_platforms_rpc(client):
+    client.init('TaskPlumeSingleSourceGaussianDefaultControls', False)
+    client.reset()
+    wps = [[0, 0, -10, 0] for i in xrange(client.numUAVs)]
+    client.step_wp(0.1, wps)
+    assert len(client.rpc('PLATFORMS', 'getPlumeSensorOutput')) > 0
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test the QRSim TCP client Python implementation.')
@@ -75,6 +91,8 @@ if __name__ == '__main__':
     test_step_wp(client)
     test_step_ctrl(client)
     test_step_vel(client)
+    test_rpc(client)
+    test_platforms_rpc(client)
     test_disconnect(client)
 
     client.connect_to(args.ip[0], args.port[0])

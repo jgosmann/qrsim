@@ -114,6 +114,26 @@ public void sendState(double t, double[][] X,double[][] eX) throws Exception
     send(mb);
   }
 
+public void sendRpcReturnValue(double[][] value) throws Exception
+  {
+    Message.Builder mb = Message.newBuilder();
+    mb.setType(Message.Type.RPC_RETURN_VALUE);
+
+    Arrayd.Builder arraydb = Arrayd.newBuilder();
+    for (int i = 0; i < value.length; i++)
+    {
+        for (int j = 0; j < value[i].length; j++)
+        {
+            arraydb.addValue(value[i][j]);
+        }
+    }
+
+    mb.setReturnValue(arraydb);
+
+    // send the message
+    send(mb);
+  }
+
 public void sendAck(boolean error) throws Exception
   {
     // send ack without message

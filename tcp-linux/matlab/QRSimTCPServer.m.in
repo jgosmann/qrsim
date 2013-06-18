@@ -232,6 +232,26 @@ while (~exit)
                     fprintf('quitting simulation\n');
                 end
             end
+
+            % type RPC
+            if(strcmp(msg.getType(), 'RPC'))
+                method = char(msg.getRpc().getMethod());
+                if(strcmp(msg.getRpc().getTarget(),'TASK'))
+                    target = state.task;
+                    value = feval(method, target);
+                elseif(strcmp(msg.getRpc().getTarget(),'PLATFORMS'))
+                    target = state.platforms
+                    numPlatforms = length(target)
+                    value = cell(1, numPlatforms)
+                    for i = 1:numPlatforms
+                        feval(method, target{i})
+                        state.platforms{1}.getPlumeSensorOutput()
+                        value{i} = feval(method, target{i})
+                    end
+                    value = cell2mat(value)
+                end
+                s.sendRpcReturnValue(value);
+            end
         end
         
     catch e
