@@ -235,27 +235,32 @@ while (~exit)
 
             % type RPC
             if(strcmp(msg.getType(), 'RPC'))
-                method = char(msg.getRpc().getMethod());
+                try
+                    method = char(msg.getRpc().getMethod());
 
-                argCount = msg.getRpc().getArgCount();
-                args = cell(1, argCount + 1);
-                for i = 1:argCount
-                    args{i + 1} = qrsimsrvcli.QRSimTCPServer.parseRpcArg( ...
-                        msg.getRpc().getArg(i - 1));
-                end
-
-                if(strcmp(msg.getRpc().getTarget(),'TASK'))
-                    args{1} = state.task;
-                    value = feval(method, args{1:end});
-                elseif(strcmp(msg.getRpc().getTarget(),'PLATFORMS'))
-                    targets = state.platforms;
-                    numPlatforms = length(targets);
-                    value = cell(1, numPlatforms);
-                    for i = 1:numPlatforms
-                        args{1} = targets{i};
-                        value{i} = feval(method, args{1:end});
+                    argCount = msg.getRpc().getArgCount();
+                    args = cell(1, argCount + 1);
+                    for i = 1:argCount
+                        args{i + 1} = qrsimsrvcli.QRSimTCPServer.parseRpcArg( ...
+                            msg.getRpc().getArg(i - 1));
                     end
-                    value = cell2mat(value);
+
+                    if(strcmp(msg.getRpc().getTarget(),'TASK'))
+                        args{1} = state.task;
+                        value = feval(method, args{1:end});
+                    elseif(strcmp(msg.getRpc().getTarget(),'PLATFORMS'))
+                        targets = state.platforms;
+                        numPlatforms = length(targets);
+                        value = cell(1, numPlatforms);
+                        for i = 1:numPlatforms
+                            args{1} = targets{i};
+                            value{i} = feval(method, args{1:end});
+                        end
+                        value = cell2mat(value);
+                    end
+                catch e
+                    % return error
+                    s.sendAck(1,e.message);
                 end
 
                 if(isnumeric(value))
