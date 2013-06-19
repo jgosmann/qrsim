@@ -43,63 +43,63 @@ class UAVState(object):
         :type state: sequence of length :attr:`size`
         """
         assert len(state) == self.size, 'Invalid state vector length.'
-        self.__state = state
+        self._state = state
 
-    position = _map_to_list('__state', slice(0, 3))
+    position = _map_to_list('_state', slice(0, 3))
     """[:attr:`x`, :attr:`y`, :attr:`z`] position [m] (NED coordinates)"""
 
-    x = _map_to_list('__state', 0)
+    x = _map_to_list('_state', 0)
     """x position [m] (NED coordinate)"""
 
-    y = _map_to_list('__state', 1)
+    y = _map_to_list('_state', 1)
     """y position [m] (NED coordinate)"""
 
-    z = _map_to_list('__state', 2)
+    z = _map_to_list('_state', 2)
     """z position [m] (NED coordinate)"""
 
-    attitude = _map_to_list('__state', slice(3, 6))
+    attitude = _map_to_list('_state', slice(3, 6))
     """[:attr:`phi`, :attr:`theta`, :attr:`psi`] attitude in Euler angles
     [rad] right-hand ZYX convention"""
 
-    phi = _map_to_list('__state', 3)
+    phi = _map_to_list('_state', 3)
     """phi angle of attitude in Euler angles [rad] right-hand ZYX convention"""
 
-    theta = _map_to_list('__state', 4)
+    theta = _map_to_list('_state', 4)
     """theta angle of attitude in Euler angles [rad] right-hand ZYX
     convention"""
 
-    psi = _map_to_list('__state', 5)
+    psi = _map_to_list('_state', 5)
     """psi angle of attitude in Euler angles [rad] right-hand ZYX convention"""
 
-    velocity = _map_to_list('__state', slice(6, 9))
+    velocity = _map_to_list('_state', slice(6, 9))
     """[:attr:`u`, :attr:`v`, :attr:`w`] velocity [m/s] in body coordinates"""
 
-    u = _map_to_list('__state', 6)
+    u = _map_to_list('_state', 6)
     """u velocity [m/s] in body coordinates"""
 
-    v = _map_to_list('__state', 7)
+    v = _map_to_list('_state', 7)
     """v velocity [m/s] in body coordinates"""
 
-    w = _map_to_list('__state', 8)
+    w = _map_to_list('_state', 8)
     """w velocity [m/s] in body coordinates"""
 
-    rotational_velocity = _map_to_list('__state', slice(10, 12))
+    rotational_velocity = _map_to_list('_state', slice(10, 12))
     """[:attr:`p`, :attr:`q`, :attr:`r`] rotational velocity [rad/s] in body
     coordinates"""
 
-    p = _map_to_list('__state', 9)
+    p = _map_to_list('_state', 9)
     """p rotational velocity [rad/s] in body coordinates"""
 
-    q = _map_to_list('__state', 10)
+    q = _map_to_list('_state', 10)
     """q rotational velocity [rad/s] in body coordinates"""
 
-    r = _map_to_list('__state', 11)
+    r = _map_to_list('_state', 11)
     """r rotational velocity [rad/s] in body coordinates"""
 
-    thrust = _map_to_list('__state', 12)
+    thrust = _map_to_list('_state', 12)
     """rotors thrust [N]"""
 
-    state = property(lambda self: self.__state)
+    state = property(lambda self: self._state)
     """Current state vector. (read-only)"""
 
     def __repr__(self):
@@ -120,80 +120,80 @@ class NoisyUAVState(object):
         :type state: sequence of length :attr:`size`
         """
         assert len(state) == self.size, 'Invalid state vector length.'
-        self.__state = state
+        self._state = state
 
-    position = _map_to_list('__state', slice(0, 3))
+    position = _map_to_list('_state', slice(0, 3))
     """[:attr:`x`, :attr:`y`, :attr:`z`] position [m] estimated by GPS (NED
     coordinates)"""
 
-    x = _map_to_list('__state', 0)
+    x = _map_to_list('_state', 0)
     """x position [m] estimated by GPS (NED coordinate)"""
 
-    y = _map_to_list('__state', 1)
+    y = _map_to_list('_state', 1)
     """y position [m] estimated by GPS (NED coordinate)"""
 
-    z = _map_to_list('__state', 2)
+    z = _map_to_list('_state', 2)
     """z position [m] estimated by GPS (NED coordinate)"""
 
-    attitude = _map_to_list('__state', slice(3, 6))
+    attitude = _map_to_list('_state', slice(3, 6))
     """Estimated [:attr:`phi`, :attr:`theta`, :attr:`psi`] attitude in Euler
     angles [rad] right-hand ZYX convention"""
 
-    phi = _map_to_list('__state', 3)
+    phi = _map_to_list('_state', 3)
     """Estimated phi angle of attitude in Euler angles [rad] right-hand ZYX
     convention"""
 
-    theta = _map_to_list('__state', 4)
+    theta = _map_to_list('_state', 4)
     """Estimated theta angle of attitude in Euler angles [rad] right-hand ZYX
     convention"""
 
-    psi = _map_to_list('__state', 5)
+    psi = _map_to_list('_state', 5)
     """Estimated psi angle of attitude in Euler angles [rad] right-hand ZYX
     convention"""
 
-    rotational_velocity = _map_to_list('__state', slice(10, 12))
+    rotational_velocity = _map_to_list('_state', slice(10, 12))
     """Measured [:attr:`p`, :attr:`q`, :attr:`r`] rotational velocity [rad/s]
     in body coordinates"""
 
-    p = _map_to_list('__state', 9)
+    p = _map_to_list('_state', 9)
     """Measured p rotational velocity [rad/s] in body coordinates"""
 
-    q = _map_to_list('__state', 10)
+    q = _map_to_list('_state', 10)
     """Measured q rotational velocity [rad/s] in body coordinates"""
 
-    r = _map_to_list('__state', 11)
+    r = _map_to_list('_state', 11)
     """Measured r rotational velocity [rad/s] in body coordinates"""
 
-    acceleration = _map_to_list('__state', slice(13, 16))
+    acceleration = _map_to_list('_state', slice(13, 16))
     """Measured [:attr:`ax`, :attr:`ay`, :attr:`az`] acceleration [m/s^2]
     in body coordinates"""
 
-    ax = _map_to_list('__state', 13)
+    ax = _map_to_list('_state', 13)
     """Measured x acceleration [m/s^2] in body coordinates"""
 
-    ay = _map_to_list('__state', 14)
+    ay = _map_to_list('_state', 14)
     """Measured y acceleration [m/s^2] in body coordinates"""
 
-    az = _map_to_list('__state', 15)
+    az = _map_to_list('_state', 15)
     """Measured z acceleration [m/s^2] in body coordinates"""
 
-    altitude = _map_to_list('__state', 16)
+    altitude = _map_to_list('_state', 16)
     """Estimated h altitutde from altimeter NED, **posititve up!**"""
 
-    gps_velocity = _map_to_list('__state', slice(17, 20))
+    gps_velocity = _map_to_list('_state', slice(17, 20))
     """[:attr:`pxdot`, :attr:`pxdot`, :attr:`hdot`] velocity [m/s] from GPS
     and altimeter (NED coordinates)"""
 
-    pxdot = _map_to_list('__state', 17)
+    pxdot = _map_to_list('_state', 17)
     """x velocity from GPS [m/s] (NED coordinates)"""
 
-    pydot = _map_to_list('__state', 18)
+    pydot = _map_to_list('_state', 18)
     """y velocity from GPS [m/s] (NED coordinates)"""
 
-    hdot = _map_to_list('__state', 19)
+    hdot = _map_to_list('_state', 19)
     """altitude rate [m/s] from altimeter (NED coordinates)"""
 
-    state = property(lambda self: self.__state)
+    state = property(lambda self: self._state)
     """Current state vector. (read-only)"""
 
     def __repr__(self):
