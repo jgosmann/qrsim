@@ -1,5 +1,6 @@
 from __future__ import division
 from math import modf
+import numpy as np
 import qrsim.qrs_srv_cli_msg_pb2 as qrsim_proto
 import socket
 
@@ -200,6 +201,38 @@ class NoisyUAVState(object):
         return '%s(%s)' % (type(self).__name__, str(self.state))
 
 
+ctrl_signal_dimensions = {'ctrl': 5, 'vel': 3, 'wp': 4}
+"""Dimensions of different control signal types."""
+
+
+class UAVControls(object):
+    """Represents the controls for a group of UAVs."""
+
+    def __init__(self, num_uavs, type):
+        """
+        :param int num_uavs: Number of UAVs for which control signals are
+            stored.
+        :param str type: Type of the control signal. Must be one of the keys of
+            :data:`ctrl_signal_dimensions`.
+        """
+        if not type in ctrl_signal_dimensions:
+            raise ValueError('Not a valid UAV control type.')
+
+        self._num_uavs = num_uavs
+        self._type = type
+        self._U = np.empty((num_uavs, ctrl_signal_dimensions[type]))
+
+    num_uavs = property(lambda self: self._num_uavs)
+    """Number of UAVs fo which control signals are stored."""
+
+    type = property(lambda self: self._type)
+    """Type of control signals."""
+
+    U = property(lambda self: self._U)
+    """Control signals as 2-dimensional array (each row corresponds to one
+    UAV."""
+
+
 class ServerSideError(Exception):
     """Raised when the server reports an error."""
     pass
@@ -344,6 +377,22 @@ class TCPClient(object):
         self._send(msg)
         self._receive_ack()
         self._state = tuple(X)
+
+    def step(self, dt, controls):
+        """Steps forward the simulator given some control signals.
+
+        :param float dt: Amount of time [s] the simulator is stepped forward.
+            Has to be a multiple of :attr:`timestep`.
+        :param controls: Control signals. The actual control mechanism is
+            chosen based on the type of control signals.
+        :type controls: :class:`UAVControls`
+        """
+        step_types = {
+            'ctrl': self.step_ctrl,
+            'vel': self.step_vel,
+            'wp': self.step_wp
+        }
+        step_types[controls.type](dt, controls.U)
 
     def step_wp(self, dt, WPs):
         """Steps forward the simulator given some waypoints.
