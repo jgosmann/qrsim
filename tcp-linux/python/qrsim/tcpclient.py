@@ -259,6 +259,16 @@ class ProtocolError(Exception):
 
 
 class TCPClient(object):
+    """TCP client to communicate with a QRSim server.
+
+    Example usage::
+
+        with TCPClient() as client:
+            client.connect_to(ip, port)
+            client.init('TaskKeepSpot')
+            # send commands
+    """
+
     TOL = 1e-6
     """Tolerance used to compare times."""
 
@@ -295,6 +305,12 @@ class TCPClient(object):
     def _needs_initialization(self):
         self._needs_open_socket()
         assert self.__initialized
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.disconnect()
 
     def connect_to(self, ip, port):
         """Connects to a QRSim server.
