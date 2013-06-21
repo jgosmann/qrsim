@@ -406,6 +406,20 @@ class TCPClient(object):
         self._step(qrsim_proto.Step.VEL, dt, velocities)
 
     def rpc(self, target, method, *args):
+        """Execute a remote procedure call (RPC).
+
+        :param str target: The target object of the remote procedure call.
+            Allowed values are `'TASK'` to address the `state.task` object of
+            the simulation and `'PLATFORMS'` to address all the
+            `state.platforms` objects.
+        :param str method: Name of the method to call.
+        :param args: Arguments to pass to the called method. Each arg has to be
+            a one-dimensional sequence. Higher dimensional arrays are not
+            supported at the moment.
+        :returns: The called methods return value as a one-dimensional
+            sequence. You have to cast in in the correct shape yourself.
+        :rtype: sequence
+        """
         self._needs_initialization()
         msg = qrsim_proto.Message()
         msg.type = qrsim_proto.Message.RPC
