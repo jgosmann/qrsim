@@ -413,7 +413,7 @@ class TCPClient(object):
         msg.rpc.method = method
         for arg in args:
             msg_arg = msg.rpc.arg.add()
-            msg_arg.value.extend(arg)
+            msg_arg.value.extend(tuple(arg))
         self._send(msg)
         return self._receive_return_value()
 
@@ -429,7 +429,7 @@ class TCPClient(object):
         msg.step.type = type
         for single_uav_cmds in cmds:
             msg_cmd = msg.step.cmd.add()
-            msg_cmd.value.extend(single_uav_cmds)
+            msg_cmd.value.extend(tuple(single_uav_cmds))
         self._send(msg)
         self._receive_state()
 
