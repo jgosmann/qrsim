@@ -263,8 +263,8 @@ class TCPClient(object):
     """Tolerance used to compare times."""
 
     def __init__(self):
-        self.__initialized = False  # FIXME reset on discon
-        self.__socket_open = False  # FIXME reset on discon
+        self.__initialized = False
+        self.__socket_open = False
         self.__size_msg = qrsim_proto.Size()
         self.__size_msg.value = 1
         self.__size_msg_size = self.__size_msg.ByteSize()
@@ -342,12 +342,15 @@ class TCPClient(object):
         :param boolean quit: If ``True`` the simulator will be turned off,
             otherwise it will keep running.
         """
-        self._needs_initialization
+        self._needs_open_socket()
         msg = qrsim_proto.Message()
         msg.type = qrsim_proto.Message.DISCONNECT
         msg.disconnect.quit = quit
         self._send(msg)
         self._receive_ack()
+        self.__sockfd.close()
+        self.__initialized = False
+        self.__socket_open = False
 
     def quit(self):
         """Turns off the simulator.
