@@ -310,7 +310,8 @@ class TCPClient(object):
         return self
 
     def __exit__(self, type, value, traceback):
-        self.disconnect()
+        if self.__socket_open:
+            self.disconnect()
 
     def connect_to(self, ip, port):
         """Connects to a QRSim server.
