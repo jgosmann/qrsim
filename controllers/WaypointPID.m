@@ -45,7 +45,7 @@ classdef WaypointPID<handle
         
         function U = computeU(obj,X,wp,desPsi)
             %
-            %  Computes the quadtotor control signals given the current state and a desired waypoint
+            %  Computes the quadrotor control signals given the current state and a desired waypoint
             %
             %  The desidred attitude is enforced by a P controller that tries to achieve a
             %  linear velocity proportional to the  distance from the target.
