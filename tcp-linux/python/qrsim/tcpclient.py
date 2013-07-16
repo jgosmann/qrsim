@@ -311,7 +311,12 @@ class TCPClient(object):
 
     def __exit__(self, type, value, traceback):
         if self.__socket_open:
-            self.disconnect()
+            try:
+                self.disconnect()
+            except Exception as err:
+                # Do raise an exception if it hid another exception.
+                if type is None:
+                    raise err
 
     def connect_to(self, ip, port):
         """Connects to a QRSim server.
