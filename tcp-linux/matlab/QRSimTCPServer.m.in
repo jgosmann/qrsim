@@ -15,9 +15,11 @@ javaaddpath('@PROTO_JAVA_DIR@/qrsimtcpserver.jar');
 javaaddpath('@PROTO_JAVA@');
 
 s = qrsimsrvcli.QRSimTCPServer(port);
+port = s.getLocalPort();
 
 % create simulator object
 qrsim = QRSim();
+fprintf(['Listening on port: %d\n'], port);
 
 exit = 0;
 

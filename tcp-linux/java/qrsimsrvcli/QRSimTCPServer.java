@@ -42,6 +42,11 @@ public void waitForClient() throws Exception
     os = CodedOutputStream.newInstance(dataSocket.getOutputStream());
   }
 
+public int getLocalPort()
+  {
+    return connSocket.getLocalPort();
+  }
+
 public Message nextCommand() throws Exception
   {
     // read sizeLength bytes from input
