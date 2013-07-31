@@ -358,6 +358,20 @@ class TCPClient(object):
         self._send(msg)
         self._receive_ack()
 
+    def reset_seed(self, seed):
+        """Resets the random number generation seed.
+
+        :param int seed: Value to set the random number generation seed to.
+
+        You should call :func:`reset` afterwards.
+        """
+        self._needs_initialization()
+        msg = qrsim_proto.Message()
+        msg.type = qrsim_proto.Message.SEED
+        msg.seed.value = seed
+        self._send(msg)
+        self._receive_ack()
+
     def disconnect(self, quit=False):
         """Disconnects from the server.
 

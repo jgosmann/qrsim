@@ -68,6 +68,10 @@ message Rpc {
     repeated Arrayd arg = 3;     // arguments to the method call
 }
 
+message SetSeed {
+    required uint32 value = 1;
+}
+
 //
 // main MESSAGE
 // for simplicity we use the same message for both cli->srv and srv->cli messages 
@@ -87,6 +91,7 @@ message Message {
         ACK = 8;
         RPC = 9;
         RPC_RETURN_VALUE = 10;
+        SEED = 11;
     }
 
     required Type type = 1 [default=NONE];
@@ -100,6 +105,7 @@ message Message {
     optional Ack ack = 9;
     optional Rpc rpc = 10;
     optional Arrayd return_value = 11;
+    optional SetSeed seed = 12;
 }
 
 

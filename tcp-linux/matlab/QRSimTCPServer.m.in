@@ -123,6 +123,19 @@ while (~exit)
                     end
                 end
             end
+
+            % type SEED
+            if(strcmp(msg.getType(),'SEED'))
+                try
+                    %reset seed
+                    qrsim.resetSeed(msg.getSeed().getValue());
+                    % return ack
+                    s.sendAck(0);
+                catch e
+                    % return error
+                    s.sendAck(1,e.message);
+                end
+            end
             
             % type STEP
             if(strcmp(msg.getType(),'STEP'))

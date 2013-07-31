@@ -43,6 +43,11 @@ def test_reset(client):
     client.reset()
 
 
+@test('reset_seed')
+def test_reset_seed(client):
+    client.reset_seed(123)
+
+
 @test('stepWP')
 def test_step_wp(client):
     wps = [[0, 0, -10, 0] for i in xrange(client.numUAVs)]
@@ -96,6 +101,7 @@ if __name__ == '__main__':
     client = TCPClient()
     client.connect_to(args.ip[0], args.port[0])
     test_init(client)
+    test_reset_seed(client)
     test_reset(client)
     test_step_wp(client)
     test_step_ctrl(client)
