@@ -565,12 +565,24 @@ class TCPClient(object):
         self.__sockfd.send(msg.SerializeToString())
 
     def _receive_msg(self):
-        self.__size_msg.ParseFromString(
-            self.__sockfd.recv(self.__size_msg_size))
-
+        self.__size_msg.ParseFromString(self._recv(self.__size_msg_size))
         msg = qrsim_proto.Message()
-        msg.ParseFromString(self.__sockfd.recv(self.__size_msg.value))
+        msg.ParseFromString(self._recv(self.__size_msg.value))
         return msg
+
+    def _recv(self, num_bytes):
+        """Receives a number of bytes blocking.
+
+        :param int num_bytes: Number of bytes to receive.
+        :returns: The bytes read.
+
+        This function will not return before `num_bytes` have been read in
+        opposite to the socket `recv` function.
+        """
+        buf = ''
+        while len(buf) < num_bytes:
+            buf += self.__sockfd.recv(num_bytes - len(buf))
+        return buf
 
     @classmethod
     def _check_msg_type(cls, msg, expected):
