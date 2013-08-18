@@ -187,6 +187,10 @@ classdef TaskPlumeSingleSourceGaussianDefaultControls<Task
             % this should be used only for debugging 
             rs = obj.simState.environment.area.getReferenceSamples();
         end
+
+        function s = getSamples(obj, locations)
+            s = obj.simState.environment.area.getSamples(reshape(locations, 3, []));
+        end
     end
     
 end
