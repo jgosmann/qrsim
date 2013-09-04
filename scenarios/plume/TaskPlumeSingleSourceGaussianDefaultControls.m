@@ -107,6 +107,9 @@ classdef TaskPlumeSingleSourceGaussianDefaultControls<Task
                 taskparams.platforms(i).configfile = 'pelican_config_plume_noiseless'; 
             end
             
+            % get hold of a prng stream
+            obj.prngId = obj.simState.numRStreams+1;
+            obj.simState.numRStreams = obj.simState.numRStreams + 1;
         end
         
         function reset(obj)
