@@ -560,8 +560,16 @@ class TCPClient(object):
 
     def _send(self, msg):
         self.__size_msg.value = msg.ByteSize()
-        self.__sockfd.send(self.__size_msg.SerializeToString())
-        self.__sockfd.send(msg.SerializeToString())
+        self._send_all(
+            self.__size_msg.SerializeToString(), self.__size_msg.ByteSize())
+        self._send_all(msg.SerializeToString(), msg.ByteSize())
+
+    def _send_all(self, bytes, num_bytes=None):
+        if num_bytes is None:
+            num_bytes = len(bytes)
+
+        while num_bytes > 0:
+            num_bytes -= self.__sockfd.send(bytes[-num_bytes:])
 
     def _receive_msg(self):
         self.__size_msg.ParseFromString(self._recv(self.__size_msg_size))
