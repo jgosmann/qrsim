@@ -318,13 +318,12 @@ class TCPClient(object):
                 if type is None:
                     raise err
 
-    def connect_to(self, ip, port):
+    def connect_to(self, ip, port, timeout=60):
         """Connects to a QRSim server.
 
         :param str ip: IP to connect to.
         :param int port: Port to connect to.
         """
-        timeout = 20
         self.__sockfd = socket.create_connection((ip, port), timeout)
         self.__socket_open = True
 
