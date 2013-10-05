@@ -190,6 +190,10 @@ classdef TaskPlumeSingleSourceGaussianDispersionDefaultControls<Task
         function s = getSamples(obj, locations)
             s = obj.simState.environment.area.getSamples(reshape(locations, 3, []));
         end
+
+        function s = getSources(obj)
+            s = obj.simState.environment.area.getSources();
+        end
     end    
 end
 
