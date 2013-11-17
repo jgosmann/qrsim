@@ -119,6 +119,10 @@ classdef GaussianDispersionPlumeArea<PlumeArea
                 c = c+ci;
             end
         end
+
+        function C = getWindAxisTransformation(obj)
+            C = obj.C;
+        end
     end
     
     methods (Access=protected)
