@@ -7,7 +7,7 @@ classdef GPSSpaceSegment < Steppable & EnvironmentObject
     %    reset()                      - does nothing 
     %
     properties (Constant)
-       TBEFOREEND = 1800; % in case of random start time, this is at least 1800 seconds before 
+       TBEFOREEND = 6000; % in case of random start time, this is at least 1800 seconds before 
                           % the end of the sp3 file  
     end
     
