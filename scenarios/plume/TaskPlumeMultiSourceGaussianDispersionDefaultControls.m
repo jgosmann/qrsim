@@ -204,6 +204,10 @@ classdef TaskPlumeMultiSourceGaussianDispersionDefaultControls<Task
         function s = getSources(obj)
             s = obj.simState.environment.area.getSources();
         end
+
+        function C = getWindAxisTransformation(obj)
+            C = obj.simState.environment.area.getWindAxisTransformation()
+        end
     end
     
 end
